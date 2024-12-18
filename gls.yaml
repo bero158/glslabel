@@ -1,0 +1,349 @@
+openapi: 3.0.0
+info:
+  title: MyGLS API
+  description: API for MyGLS services
+  version: 1.0.0
+servers:
+  - url: https://api.mygls.cz
+paths:
+  /PrepareLabels:
+    post:
+      summary: Prepare labels for parcels
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrepareLabelsRequest'
+      responses:
+        '200':
+          description: Labels prepared successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrepareLabelsResponse'
+  /GetPrintedLabels:
+    post:
+      summary: Get printed labels
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetPrintedLabelsRequest'
+      responses:
+        '200':
+          description: Printed labels retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPrintedLabelsResponse'
+  /PrintLabels:
+    post:
+      summary: Calls both PrepareLabels and GetPrintedLabels in one step
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref:  '#/components/schemas/PrintLabelsRequest'
+      responses:
+        '200':
+          description: Print labels retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPrintedLabelsResponse'
+  /GetParcelList:
+    post:
+      summary: Get parcel(s) information by date ranges.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref:  '#/components/schemas/GetParcelListRequest'
+      responses:
+        '200':
+          description: Parcel list retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetParcelListResponse'
+components:
+  schemas:
+    PrepareLabelsRequest:
+      type: object
+      properties:
+        Username:
+          type: string
+        Password:
+          type: array
+          items:
+            type: integer
+        ParcelList:
+          type: array
+          items:
+            $ref: '#/components/schemas/Parcel'
+    PrepareLabelsResponse:
+      type: object
+      properties:
+        labels:
+          type: array
+          items:
+            type: string
+    PrintLabelsRequest:
+      type: object
+      properties:
+        Username:
+          type: string
+        Password:
+          type: array
+          items:
+            type: integer
+        ParcelList:
+          type: array
+          items:
+            $ref: '#/components/schemas/Parcel'
+        PrintPosition:
+          type: integer
+        ShowPrintDialog:
+          type: boolean
+        TypeOfPrinter:
+          type: string
+    PrintLabelsResponse:
+      type: object
+      properties:
+        Labels:
+          type: array
+          items:
+            type: integer
+        PrintLabelsErrorList:
+          type: array
+          items:
+             $ref: '#/components/schemas/ErrorInfo'
+        PrintLabelsInfoList:
+          type: array
+          items:
+             $ref: '#/components/schemas/ParcelInfo'
+
+    GetPrintedLabelsRequest:
+      type: object
+      properties:
+        Username:
+          type: string
+        Password:
+          type: array
+          items:
+            type: integer
+        ParcelIdList:
+          type: array
+          items:
+            type: integer
+        PrintPosition:
+          type: integer
+        ShowPrintDialog:
+          type: boolean
+        TypeOfPrinter:
+          type: string
+    GetPrintedLabelsResponse:
+      type: object
+      properties:
+        Labels:
+          type: array
+          items:
+            type: integer
+        GetPrintedLabelsErrorList:
+          type: array
+          items:
+             $ref: '#/components/schemas/ErrorInfo'
+    GetParcelListRequest:
+      type: object
+      properties:
+        Username:
+          type: string
+        Password:
+          type: array
+          items:
+            type: integer
+        PickupDateFrom:
+          type: string
+        PickupDateTo:
+          type: string
+        PrintDateFrom:
+          type: string
+        PrintDateTo:
+          type: string
+    GetParcelListResponse:
+      type: object
+      properties:
+        GetParcelListErrors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorInfo'
+        PrintDataInfoList:
+          type: array
+          items:
+            $ref: '#/components/schemas/PrintDataInfo'
+  
+    Parcel:
+      type: object
+      properties:
+        ClientNumber:
+          type: integer
+        ClientReference:
+          type: string
+        Count:
+          type: integer
+        CODAmount:
+          type: number
+        CODReference:
+          type: string
+        CODCurrency:
+          type: string
+        Content:
+          type: string
+        PickupDate:
+          type: string
+        PickupAddress:
+          $ref: '#/components/schemas/Address'
+        DeliveryAddress:
+          $ref: '#/components/schemas/Address'
+        ServiceList:
+          type: array
+          items:
+            $ref: '#/components/schemas/Service'
+          nullable: true
+        SenderIdentityCardNumber:
+          type: string
+        PickupType:
+          type: integer
+        
+    Address:
+      type: object
+      properties:
+        Name:
+          type: string
+        Street:
+          type: string
+        HouseNumber:
+          type: string
+        HouseNumberInfo:
+          type: string
+        City:
+          type: string
+        ZipCode:
+          type: string
+        CountryIsoCode:
+          type: string
+        ContactName:
+          type: string
+        ContactPhone:
+          type: string
+        ContactEmail:
+          type: string
+    Service:
+      type: object
+      nullable: true
+      properties:
+        ADRParameter:
+          type: string
+          nullable: true
+        AOSParameter:
+          type: string
+          nullable: true
+        CS1Parameter:
+          type: string
+          nullable: true
+        DDSParameter:
+          type: string
+          nullable: true
+        DPVParameter:
+          type: string
+          nullable: true
+        FDSParameter:
+          type: string
+          nullable: true
+        FSSParameter:
+          type: string
+          nullable: true
+        INSParameter:
+          type: string
+          nullable: true
+        MMPParameter:
+          type: string
+          nullable: true
+        PSDParameter:
+          type: string
+          nullable: true
+        SDSParameter:
+          type: string
+          nullable: true
+        SM1Parameter:
+          type: string
+          nullable: true
+        SM2Parameter:
+          type: string
+          nullable: true
+        SZLParameter:
+          type: string
+          nullable: true
+        Value:
+          type: string
+          nullable: true
+    ErrorInfo:
+      type: object
+      properties:
+        ErrorCode:
+          oneOf:
+            - type: string
+            - type: integer
+        ErrorDescription:
+          type: string
+        ClientReferenceList:
+          type: array
+          nullable: true
+          items:
+            type: string
+        ParcelIdList:
+          type: array
+          nullable: true
+          items:
+            type: integer
+    ParcelInfo:
+      type: object
+      properties:
+        ClientReference:
+          type: string
+        ParcelId:
+          type: integer
+    PrintDataInfo:
+      type: object
+      properties:
+        B2CChar:
+          type: string
+          nullable: true
+        ClientReference:
+          type: string
+          nullable: true
+        Depot:
+          type: string
+          nullable: true
+        DepotNumber:
+          type: string
+        Displaylanguage:
+          type: string
+          nullable: true
+        Driver:
+          type: string
+        Parcel:
+          $ref: '#/components/schemas/Parcel'
+        ParcelId:
+          type: integer
+        ParcelNumber:
+          type: integer
+        ParcelNumberWithCheckdigit:
+          type: integer
+        Sort:
+          type: string
+          nullable: true

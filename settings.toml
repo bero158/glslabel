@@ -1,0 +1,3 @@
+LOGLEVEL = "INFO"
+TYPEOFPRINTER = "Connect"
+HOST = "https://api.mygls.cz/ParcelService.svc/json"

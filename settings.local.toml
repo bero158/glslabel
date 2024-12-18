@@ -1,0 +1,2 @@
+LOGLEVEL = "INFO"
+HOST = "https://api.test.mygls.cz/ParcelService.svc/json"
