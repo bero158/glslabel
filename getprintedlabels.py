@@ -10,8 +10,8 @@ from dateutil.relativedelta import relativedelta
 import argparse
 import tempfile
 
-
 class GLSApi:
+    """High level API for manipulating with GLS labels"""
     userName : str
     pwdH : str
     apiClient : openapi_client.ApiClient
@@ -25,15 +25,18 @@ class GLSApi:
         
     @staticmethod
     def hashPassword(pwd : str) -> list[int]:
+        """GLS specific password hash"""
         hashed = hashlib.sha512(pwd.encode()).digest()
         return list(hashed)
 
     @staticmethod
     def formatPHPDate(dt : time.struct_time) -> str:
+        """GLS specific date format"""
         phpDate = "/Date(" + str(int(time.mktime(dt) * 1000)) + ")/"
         return phpDate
 
     def getPrintedLabels(self, parcelList : list[str], typeOfPrinter : str) -> list[int]:
+        """returns labels PDFs as array of integers"""
         # Enter a context with an instance of the API client
         getPrintedLabelsRequest = openapi_client.GetPrintedLabelsRequest(
                 Username=self.userName,
@@ -52,6 +55,7 @@ class GLSApi:
 
     @staticmethod
     def savePdf(fName : str, data : list[int]):
+        """Save to file"""
         if data:
             with open(fName, 'wb') as file:
                 file.write(bytearray(data))
@@ -60,6 +64,7 @@ class GLSApi:
 
     @staticmethod
     def printPdf(data : list[int]):
+        """Prints PDF(s)through a standard system printing service (on Windows opens Adobe Reader)"""
         if data:
             fd,file = tempfile.mkstemp(suffix=".pdf") 
             os.write(fd,bytearray(data))
@@ -71,6 +76,7 @@ class GLSApi:
                 
 
     def getParcelList(self, printDates : tuple[time.struct_time,time.struct_time] = None) -> list[openapi_client.PrintDataInfo]:
+        """Returns list of parcels created in the selected interval"""
         if not printDates:
             #set default values. Only 31 days can be selected.
             now=datetime.now() 
@@ -202,8 +208,6 @@ def main():
         api.savePdf(args.output, labels)
     if args.print:
         api.printPdf(labels)
-
-
 
 if __name__ == '__main__':
     main()
