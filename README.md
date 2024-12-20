@@ -13,8 +13,9 @@ getprintedlabels.py is a CLI implementation of getPrintedLabels. It can create P
 
 Features
 --------
-* The behavior can be configured via settings.local.toml
+* Behavior can be configured through settings.local.toml or via env. variables starting with prefix GLSLABEL
 * Secrets are stored in .secrets.toml (you must create it)
+* In case the label exists and can't be printed (because of lack of this ability from GLS then a copy of the label is made and the copied label is stored and/or printed)
 
 Dependencies
 ------------
@@ -38,8 +39,12 @@ Installation
 Usage
 -----
 
-`python getprintedlabels.py -id <your-package-id> -o label.pdf`
+`python getprintedlabels.py -id <your-package-id> -o label.pdf -p`
 Expected behavior is you get PDF with label(s) or API error.
+
+(Re)Generate API
+----------------
+npx @openapitools/openapi-generator-cli generate -i gls.yaml -g python -o ./glslabelapi                                    
 
 Current state
 -------------

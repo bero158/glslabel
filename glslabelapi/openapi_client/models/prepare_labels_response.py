@@ -17,8 +17,10 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
+from openapi_client.models.error_info import ErrorInfo
+from openapi_client.models.parcel_info import ParcelInfo
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -26,8 +28,9 @@ class PrepareLabelsResponse(BaseModel):
     """
     PrepareLabelsResponse
     """ # noqa: E501
-    labels: Optional[List[StrictStr]] = None
-    __properties: ClassVar[List[str]] = ["labels"]
+    parcel_info_list: Optional[List[ParcelInfo]] = Field(default=None, alias="ParcelInfoList")
+    parcel_labels_error: Optional[List[ErrorInfo]] = Field(default=None, alias="ParcelLabelsError")
+    __properties: ClassVar[List[str]] = ["ParcelInfoList", "ParcelLabelsError"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -68,6 +71,20 @@ class PrepareLabelsResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in parcel_info_list (list)
+        _items = []
+        if self.parcel_info_list:
+            for _item_parcel_info_list in self.parcel_info_list:
+                if _item_parcel_info_list:
+                    _items.append(_item_parcel_info_list.to_dict())
+            _dict['ParcelInfoList'] = _items
+        # override the default output from pydantic by calling `to_dict()` of each item in parcel_labels_error (list)
+        _items = []
+        if self.parcel_labels_error:
+            for _item_parcel_labels_error in self.parcel_labels_error:
+                if _item_parcel_labels_error:
+                    _items.append(_item_parcel_labels_error.to_dict())
+            _dict['ParcelLabelsError'] = _items
         return _dict
 
     @classmethod
@@ -80,7 +97,8 @@ class PrepareLabelsResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "labels": obj.get("labels")
+            "ParcelInfoList": [ParcelInfo.from_dict(_item) for _item in obj["ParcelInfoList"]] if obj.get("ParcelInfoList") is not None else None,
+            "ParcelLabelsError": [ErrorInfo.from_dict(_item) for _item in obj["ParcelLabelsError"]] if obj.get("ParcelLabelsError") is not None else None
         })
         return _obj
 

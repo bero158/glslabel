@@ -88,10 +88,15 @@ components:
     PrepareLabelsResponse:
       type: object
       properties:
-        labels:
+        ParcelInfoList:
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/ParcelInfo'
+        ParcelLabelsError:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorInfo'
+
     PrintLabelsRequest:
       type: object
       properties:
