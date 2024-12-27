@@ -9,6 +9,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import argparse
 import tempfile
+import locale
 
 class GLSApi:
     """High level API for manipulating with GLS labels"""
@@ -62,18 +63,57 @@ class GLSApi:
         else:
             LOGGER.error("Label data is empty")
 
+    def savePdfToTemp(data : list[int]) -> str:
+        """Save to temp and returns filename """
+        if data:
+            fd,file = tempfile.mkstemp(suffix=".pdf") 
+            if fd:
+                os.write(fd,bytearray(data))
+                os.close(fd)
+                return file
+        else:
+            LOGGER.error("Label data is empty")
+
     @staticmethod
     def printPdf(data : list[int]):
         """Prints PDF(s)through a standard system printing service (on Windows opens Adobe Reader)"""
         if data:
-            fd,file = tempfile.mkstemp(suffix=".pdf") 
-            os.write(fd,bytearray(data))
-            os.close(fd)
+            file = GLSApi.savePdfToTemp(data)
             os.startfile(file, 'print')
             os.remove(file)
         else:
             LOGGER.error("Label data is empty")
-                
+    
+    @staticmethod
+    def printGS(data: list[int], device: str):
+        """Prints PDF(s) via GhostScript"""
+        from ghostscript import Ghostscript, GhostscriptError
+        encoding = locale.getpreferredencoding()
+        if data:
+            file = GLSApi.savePdfToTemp(data)
+            args = [
+               "-dPrinted", "-dBATCH", "-dNOSAFER", "-dNOPAUSE", "-dNOPROMPT",
+                f"-sOutputFile=%printer%{device}",
+                "-dNumCopies=1",
+                "-sDEVICE=mswinpr2",
+                file
+            ]
+            
+            argsE = [a.encode(encoding) for a in args]
+            #argsE=args
+            try:
+                Ghostscript(*argsE)
+            except GhostscriptError as e:
+                LOGGER.error(f"Ghostscript error: {e}")
+            os.remove(file)
+        else:
+            LOGGER.error("Label data is empty")            
+    @staticmethod
+    def getListOfAvailablePrinters():
+        """Returns list of available printers"""
+        from win32print import EnumPrinters, PRINTER_ENUM_LOCAL
+        printers = EnumPrinters(PRINTER_ENUM_LOCAL)
+        return printers
 
     def getParcelList(self, printDates : tuple[time.struct_time,time.struct_time] = None) -> list[openapi_client.PrintDataInfo]:
         """Returns list of parcels created in the selected interval"""
@@ -152,6 +192,9 @@ class GLSApi:
         except Exception as e:
             LOGGER.error(f"Exception when calling DefaultApi->prepare_labels_post: {e}")
 
+    
+
+
 def main():
     realPath = os.path.join(os.path.realpath(os.path.dirname(__file__)))
     settings = Dynaconf(
@@ -170,7 +213,11 @@ def main():
     parser.add_argument('-nr','--parcelnr', help="Parcel Number (printed on label). Must be younger than 20 days", type=int)
     parser.add_argument('-id','--parcelid', help="Parcel ID (number in GLS database)", type=int)
     parser.add_argument('-o','--output', help="Output filename")
-    parser.add_argument('-p','--print', help="Print label(s)", action='store_true')
+    parser.add_argument('-p','--print', help="Print label(s) through default PDF system handler", action='store_true')
+    parser.add_argument('-lp','--listprinters', help="List of available printers. Currently for Windows only", action='store_true')
+    parser.add_argument('-pg','--printgs', help="Print label(s) via GhostScript (GhostScript must be installed)", action='store_true')
+    parser.add_argument('-pd','--printdev', help="Printing device for GhostScript", type=str)
+    
     parser.add_argument('-v', '--verbose', help="Show Debug messages", action='store_true') 
     
     args = parser.parse_args()
@@ -182,7 +229,12 @@ def main():
     api = GLSApi(configuration, settings.USERNAME, settings.PASSWORD)
     labels = None
     parcelId = None
-    if not args.output and not args.print:
+    if args.listprinters:
+        printers = api.getListOfAvailablePrinters()
+        for printer in printers:
+            LOGGER.info(f"Printer: {printer[2]}")
+        return
+    if not args.output and not args.print and not args.printgs:
         LOGGER.error(f"Output file or device must be specified (-o) or Print must be set (-p)") 
         return
     if args.parcelid:
@@ -208,6 +260,9 @@ def main():
         api.savePdf(args.output, labels)
     if args.print:
         api.printPdf(labels)
+    if args.printgs:
+        api.printGS(labels, args.printdev)
+        
 
 if __name__ == '__main__':
     main()
