@@ -95,6 +95,8 @@ class GLSApi:
                "-dPrinted", "-dBATCH", "-dNOSAFER", "-dNOPAUSE", "-dNOPROMPT",
                 f"-sOutputFile=%printer%{device}",
                 "-dNumCopies=1",
+                "-dFitPage",
+                "-dAutoRotatePages=/All",
                 "-sDEVICE=mswinpr2",
                 file
             ]
