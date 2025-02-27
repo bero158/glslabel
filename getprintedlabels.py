@@ -1,5 +1,5 @@
-import glslabelapi.openapi_client as openapi_client
-from glslabelapi.openapi_client.rest import ApiException
+import openapi_client as openapi_client
+from openapi_client.rest import ApiException
 from dynaconf import Dynaconf
 import logging as LOGGER
 import os
@@ -18,9 +18,10 @@ class GLSApi:
     apiClient : openapi_client.ApiClient
     apiInstance : openapi_client.DefaultApi
 
-    def __init__(self, configuration, username : str, pwd : str):
+    def __init__(self, username : str, pwd : str, host : str):
         self.userName = username
         self.pwdH = self.hashPassword(pwd)
+        configuration = openapi_client.Configuration(host = host)
         self.apiClient = openapi_client.ApiClient(configuration)
         self.apiInstance = openapi_client.DefaultApi(self.apiClient)
         
@@ -35,6 +36,46 @@ class GLSApi:
         """GLS specific date format"""
         phpDate = "/Date(" + str(int(time.mktime(dt) * 1000)) + ")/"
         return phpDate
+    
+    def printLabel(self, parcel : openapi_client.Parcel) -> tuple[list[int],str]:
+        return self.prepareLabels([parcel])
+    
+    def printLabels(self,parcelList : list[openapi_client.Parcel]) -> tuple[list[int],str]:
+        printLabelsRequest = openapi_client.PrintLabelsRequest(
+            Username=self.userName,
+            Password=self.pwdH,
+            ParcelList=parcelList)
+        try:
+            # Get printed labels
+            api_response = self.apiInstance.print_labels_post(printLabelsRequest)
+            LOGGER.info("The response of DefaultApi->printLabelsRequest:")
+            LOGGER.debug(api_response)
+            return api_response.labels,api_response.get_printed_labels_error_list
+        except ApiException as e:
+            LOGGER.error("Exception when calling DefaultApi->printLabelsRequest: %s" % e)
+
+    def prepareLabel(self, parcel : openapi_client.Parcel) -> tuple[list[int],str]:
+        return self.prepareLabels([parcel])
+    
+    def prepareLabels(self, parcelList : list[openapi_client.Parcel]) -> tuple[list[int],str]:
+        """
+        Creates a new parcel
+        returns labels PDFs as array of integers
+        """
+        # Enter a context with an instance of the API client
+        prepareLabelsRequest = openapi_client.PrepareLabelsRequest(
+                Username=self.userName,
+                Password=self.pwdH,
+                ParcelList=parcelList
+        )
+        try:
+            # Get printed labels
+            api_response = self.apiInstance.prepare_labels_post(prepareLabelsRequest)
+            LOGGER.info("The response of DefaultApi->prepareLabelsRequest:")
+            LOGGER.debug(api_response)
+            return api_response.parcel_info_list,api_response.parcel_labels_error
+        except ApiException as e:
+            LOGGER.error("Exception when calling DefaultApi->prepareLabelsRequest: %s" % e)
 
     def getPrintedLabels(self, parcelList : list[str], typeOfPrinter : str) -> list[int]:
         """returns labels PDFs as array of integers"""
@@ -48,11 +89,11 @@ class GLSApi:
         try:
             # Get printed labels
             api_response = self.apiInstance.get_printed_labels_post(getPrintedLabelsRequest)
-            LOGGER.info("The response of DefaultApi->get_printed_labels_post:\n")
+            LOGGER.info("The response of DefaultApi->get_printed_labels_post:")
             LOGGER.debug(api_response)
             return api_response.labels,api_response.get_printed_labels_error_list
         except ApiException as e:
-            LOGGER.error("Exception when calling DefaultApi->get_printed_labels_post: %s\n" % e)
+            LOGGER.error("Exception when calling DefaultApi->get_printed_labels_post: %s" % e)
 
     @staticmethod
     def savePdf(fName : str, data : list[int]):
@@ -109,7 +150,8 @@ class GLSApi:
                 LOGGER.error(f"Ghostscript error: {e}")
             os.remove(file)
         else:
-            LOGGER.error("Label data is empty")            
+            LOGGER.error("Label data is empty")   
+                     
     @staticmethod
     def getListOfAvailablePrinters():
         """Returns list of available printers"""
@@ -144,13 +186,13 @@ class GLSApi:
         try:
             # Get printed labels
             api_response = self.apiInstance.get_parcel_list_post(getParcelListRequest)
-            LOGGER.info("The response of DefaultApi->get_parcel_list_post:\n")
+            LOGGER.info("The response of DefaultApi->get_parcel_list_post:")
             LOGGER.debug(api_response)
             LOGGER.info(f"Found {len(api_response.print_data_info_list)} packages:\n")
             
             return api_response.print_data_info_list
         except ApiException as e:
-            LOGGER.error("Exception when calling DefaultApi->get_printed_labels_post: %s\n" % e)
+            LOGGER.error("Exception when calling DefaultApi->get_printed_labels_post: %s" % e)
 
 
     def findParcelDataInfo(self, parcelNr : int = None, parcelId : int = None, parcelList : list[openapi_client.Parcel] = None) -> openapi_client.PrintDataInfo:
@@ -227,8 +269,7 @@ def main():
     level='DEBUG' if args.verbose else settings.LOGLEVEL
     format="%(asctime)s %(levelname)s:%(name)s:%(message)s" if level == 'DEBUG' else "%(levelname)s - %(message)s"
     LOGGER.basicConfig(level='DEBUG' if args.verbose else settings.LOGLEVEL, format=format)
-    configuration = openapi_client.Configuration(host = settings.HOST)
-    api = GLSApi(configuration, settings.USERNAME, settings.PASSWORD)
+    api = GLSApi(settings.USERNAME, settings.PASSWORD, host = settings.HOST)
     labels = None
     parcelId = None
     if args.listprinters:

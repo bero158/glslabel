@@ -5,3 +5,4 @@ typing-extensions >= 4.7.1
 dynaconf
 argparse
 PyPDF2
+win32printing
