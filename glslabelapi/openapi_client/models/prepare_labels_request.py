@@ -31,7 +31,7 @@ class PrepareLabelsRequest(BaseModel):
     password: Optional[List[StrictInt]] = Field(default=None, alias="Password")
     parcel_list: Optional[List[Parcel]] = Field(default=None, alias="ParcelList")
     __properties: ClassVar[List[str]] = ["Username", "Password", "ParcelList"]
-
+    webshop_engine: StrictStr = Field(alias="WebshopEngine")
     model_config = ConfigDict(
         populate_by_name=True,
         validate_assignment=True,

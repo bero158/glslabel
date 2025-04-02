@@ -6,3 +6,4 @@ dynaconf
 argparse
 PyPDF2
 win32printing
+ghostscript

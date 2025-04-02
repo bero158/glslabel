@@ -30,6 +30,7 @@ class PrintLabelsRequest(BaseModel):
     username: Optional[StrictStr] = Field(default=None, alias="Username")
     password: Optional[List[StrictInt]] = Field(default=None, alias="Password")
     parcel_list: Optional[List[Parcel]] = Field(default=None, alias="ParcelList")
+    webshop_engine: StrictStr = Field(alias="WebshopEngine")
     print_position: Optional[StrictInt] = Field(default=None, alias="PrintPosition")
     show_print_dialog: Optional[StrictBool] = Field(default=None, alias="ShowPrintDialog")
     type_of_printer: Optional[StrictStr] = Field(default=None, alias="TypeOfPrinter")

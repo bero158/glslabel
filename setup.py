@@ -28,7 +28,7 @@ REQUIRES = [
     "dynaconf",
     "argparse",
     "PyPDF2",
-    "glslabelapi",
+    # "glslabelapi",
     "win32printing"
 ]
 

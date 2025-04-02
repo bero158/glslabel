@@ -1,5 +1,5 @@
+#import glslabelapi.openapi_client as openapi_client
 import openapi_client as openapi_client
-from openapi_client.rest import ApiException
 from dynaconf import Dynaconf
 import logging as LOGGER
 import os
@@ -17,14 +17,14 @@ class GLSApi:
     pwdH : str
     apiClient : openapi_client.ApiClient
     apiInstance : openapi_client.DefaultApi
-
-    def __init__(self, username : str, pwd : str, host : str):
+    webshopEngine : str
+    def __init__(self, username : str, pwd : str, host : str, webshopEngine : str):
         self.userName = username
         self.pwdH = self.hashPassword(pwd)
         configuration = openapi_client.Configuration(host = host)
         self.apiClient = openapi_client.ApiClient(configuration)
         self.apiInstance = openapi_client.DefaultApi(self.apiClient)
-        
+        self.webshopEngine = webshopEngine
     @staticmethod
     def hashPassword(pwd : str) -> list[int]:
         """GLS specific password hash"""
@@ -38,26 +38,27 @@ class GLSApi:
         return phpDate
     
     def printLabel(self, parcel : openapi_client.Parcel) -> tuple[list[int],str]:
-        return self.prepareLabels([parcel])
+        return self.printLabels([parcel])
     
     def printLabels(self,parcelList : list[openapi_client.Parcel]) -> tuple[list[int],str]:
         printLabelsRequest = openapi_client.PrintLabelsRequest(
             Username=self.userName,
             Password=self.pwdH,
-            ParcelList=parcelList)
+            ParcelList=parcelList,
+            WebshopEngine=self.webshopEngine)
         try:
             # Get printed labels
             api_response = self.apiInstance.print_labels_post(printLabelsRequest)
             LOGGER.info("The response of DefaultApi->printLabelsRequest:")
             LOGGER.debug(api_response)
             return api_response.labels,api_response.get_printed_labels_error_list
-        except ApiException as e:
+        except openapi_client.ApiException as e:
             LOGGER.error("Exception when calling DefaultApi->printLabelsRequest: %s" % e)
 
-    def prepareLabel(self, parcel : openapi_client.Parcel) -> tuple[list[int],str]:
+    def prepareLabel(self, parcel : openapi_client.Parcel) -> tuple[list[openapi_client.ParcelInfo],list[openapi_client.ErrorInfo]]:
         return self.prepareLabels([parcel])
     
-    def prepareLabels(self, parcelList : list[openapi_client.Parcel]) -> tuple[list[int],str]:
+    def prepareLabels(self, parcelList : list[openapi_client.Parcel]) -> tuple[list[openapi_client.ParcelInfo],list[openapi_client.ErrorInfo]]:
         """
         Creates a new parcel
         returns labels PDFs as array of integers
@@ -66,15 +67,16 @@ class GLSApi:
         prepareLabelsRequest = openapi_client.PrepareLabelsRequest(
                 Username=self.userName,
                 Password=self.pwdH,
-                ParcelList=parcelList
+                ParcelList=parcelList,
+                WebshopEngine=self.webshopEngine
         )
         try:
             # Get printed labels
-            api_response = self.apiInstance.prepare_labels_post(prepareLabelsRequest)
+            api_response : openapi_client.PrepareLabelsResponse = self.apiInstance.prepare_labels_post(prepareLabelsRequest)
             LOGGER.info("The response of DefaultApi->prepareLabelsRequest:")
             LOGGER.debug(api_response)
             return api_response.parcel_info_list,api_response.parcel_labels_error
-        except ApiException as e:
+        except openapi_client.ApiException as e:
             LOGGER.error("Exception when calling DefaultApi->prepareLabelsRequest: %s" % e)
 
     def getPrintedLabels(self, parcelList : list[str], typeOfPrinter : str) -> list[int]:
@@ -92,7 +94,7 @@ class GLSApi:
             LOGGER.info("The response of DefaultApi->get_printed_labels_post:")
             LOGGER.debug(api_response)
             return api_response.labels,api_response.get_printed_labels_error_list
-        except ApiException as e:
+        except openapi_client.ApiException as e:
             LOGGER.error("Exception when calling DefaultApi->get_printed_labels_post: %s" % e)
 
     @staticmethod
@@ -133,17 +135,23 @@ class GLSApi:
         if data:
             file = GLSApi.savePdfToTemp(data)
             args = [
-               "-dPrinted", "-dBATCH", "-dNOSAFER", "-dNOPAUSE", "-dNOPROMPT",
+                "-q",
+                "-dQUIET",
+                "-dPrinted",
+                "-dBATCH",
+                "-dNOSAFER",
+                "-dNOPAUSE",
+                "-dNOPROMPT",
                 f"-sOutputFile=%printer%{device}",
                 "-dNumCopies=1",
                 "-dFitPage",
+                "-dNOCANCEL",
                 "-dAutoRotatePages=/All",
                 "-sDEVICE=mswinpr2",
                 file
             ]
             
             argsE = [a.encode(encoding) for a in args]
-            #argsE=args
             try:
                 Ghostscript(*argsE)
             except GhostscriptError as e:
