@@ -199,7 +199,7 @@ class GLSApi:
             LOGGER.info(f"Found {len(api_response.print_data_info_list)} packages:\n")
             
             return api_response.print_data_info_list
-        except ApiException as e:
+        except openapi_client.ApiException as e:
             LOGGER.error("Exception when calling DefaultApi->get_printed_labels_post: %s" % e)
 
 
