@@ -26,6 +26,7 @@ class Service(BaseModel):
     """
     Service
     """ # noqa: E501
+    code: Optional[StrictStr] = Field(default=None, alias="Code")
     adr_parameter: Optional[StrictStr] = Field(default=None, alias="ADRParameter")
     aos_parameter: Optional[StrictStr] = Field(default=None, alias="AOSParameter")
     cs1_parameter: Optional[StrictStr] = Field(default=None, alias="CS1Parameter")
