@@ -35,8 +35,21 @@ class TestPrepareLabelsResponse(unittest.TestCase):
         model = PrepareLabelsResponse()
         if include_optional:
             return PrepareLabelsResponse(
-                labels = [
-                    ''
+                parcel_info_list = [
+                    openapi_client.models.parcel_info.ParcelInfo(
+                        client_reference = '', 
+                        parcel_id = 56, )
+                    ],
+                prepare_labels_error = [
+                    openapi_client.models.error_info.ErrorInfo(
+                        error_code = null, 
+                        error_description = '', 
+                        client_reference_list = [
+                            ''
+                            ], 
+                        parcel_id_list = [
+                            56
+                            ], )
                     ]
             )
         else:

@@ -37,7 +37,7 @@ class TestGetParcelListResponse(unittest.TestCase):
             return GetParcelListResponse(
                 get_parcel_list_errors = [
                     openapi_client.models.error_info.ErrorInfo(
-                        error_code = 56, 
+                        error_code = null, 
                         error_description = '', 
                         client_reference_list = [
                             ''
@@ -48,8 +48,67 @@ class TestGetParcelListResponse(unittest.TestCase):
                     ],
                 print_data_info_list = [
                     openapi_client.models.print_data_info.PrintDataInfo(
+                        b2_c_char = '', 
                         client_reference = '', 
-                        parcel_id = 56, )
+                        depot = '', 
+                        depot_number = '', 
+                        displaylanguage = '', 
+                        driver = '', 
+                        parcel = openapi_client.models.parcel.Parcel(
+                            client_number = 56, 
+                            client_reference = '', 
+                            count = 56, 
+                            cod_amount = 1.337, 
+                            cod_reference = '', 
+                            cod_currency = '', 
+                            content = '', 
+                            pickup_date = '', 
+                            pickup_address = openapi_client.models.address.Address(
+                                name = '', 
+                                street = '', 
+                                house_number = '', 
+                                house_number_info = '', 
+                                city = '', 
+                                zip_code = '', 
+                                country_iso_code = '', 
+                                contact_name = '', 
+                                contact_phone = '', 
+                                contact_email = '', ), 
+                            delivery_address = openapi_client.models.address.Address(
+                                name = '', 
+                                street = '', 
+                                house_number = '', 
+                                house_number_info = '', 
+                                city = '', 
+                                zip_code = '', 
+                                country_iso_code = '', 
+                                contact_name = '', 
+                                contact_phone = '', 
+                                contact_email = '', ), 
+                            service_list = [
+                                openapi_client.models.service.Service(
+                                    adr_parameter = '', 
+                                    aos_parameter = '', 
+                                    cs1_parameter = '', 
+                                    dds_parameter = '', 
+                                    dpv_parameter = '', 
+                                    fds_parameter = '', 
+                                    fss_parameter = '', 
+                                    ins_parameter = '', 
+                                    mmp_parameter = '', 
+                                    psd_parameter = '', 
+                                    sds_parameter = '', 
+                                    sm1_parameter = '', 
+                                    sm2_parameter = '', 
+                                    szl_parameter = '', 
+                                    value = '', )
+                                ], 
+                            sender_identity_card_number = '', 
+                            pickup_type = 56, ), 
+                        parcel_id = 56, 
+                        parcel_number = 56, 
+                        parcel_number_with_checkdigit = 56, 
+                        sort = '', )
                     ]
             )
         else:

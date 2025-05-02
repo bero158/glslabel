@@ -26,6 +26,20 @@ class TestDefaultApi(unittest.TestCase):
     def tearDown(self) -> None:
         pass
 
+    def test_get_parcel_list_post(self) -> None:
+        """Test case for get_parcel_list_post
+
+        Get parcel(s) information by date ranges.
+        """
+        pass
+
+    def test_get_parcel_statuses_post(self) -> None:
+        """Test case for get_parcel_statuses_post
+
+        Get parcel(s) information by parcel numbers
+        """
+        pass
+
     def test_get_printed_labels_post(self) -> None:
         """Test case for get_printed_labels_post
 
@@ -37,6 +51,13 @@ class TestDefaultApi(unittest.TestCase):
         """Test case for prepare_labels_post
 
         Prepare labels for parcels
+        """
+        pass
+
+    def test_print_labels_post(self) -> None:
+        """Test case for print_labels_post
+
+        Calls both PrepareLabels and GetPrintedLabels in one step
         """
         pass
 

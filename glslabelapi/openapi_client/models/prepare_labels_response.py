@@ -29,8 +29,8 @@ class PrepareLabelsResponse(BaseModel):
     PrepareLabelsResponse
     """ # noqa: E501
     parcel_info_list: Optional[List[ParcelInfo]] = Field(default=None, alias="ParcelInfoList")
-    parcel_labels_error: Optional[List[ErrorInfo]] = Field(default=None, alias="ParcelLabelsError")
-    __properties: ClassVar[List[str]] = ["ParcelInfoList", "ParcelLabelsError"]
+    prepare_labels_error: Optional[List[ErrorInfo]] = Field(default=None, alias="PrepareLabelsError")
+    __properties: ClassVar[List[str]] = ["ParcelInfoList", "PrepareLabelsError"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -78,13 +78,13 @@ class PrepareLabelsResponse(BaseModel):
                 if _item_parcel_info_list:
                     _items.append(_item_parcel_info_list.to_dict())
             _dict['ParcelInfoList'] = _items
-        # override the default output from pydantic by calling `to_dict()` of each item in parcel_labels_error (list)
+        # override the default output from pydantic by calling `to_dict()` of each item in prepare_labels_error (list)
         _items = []
-        if self.parcel_labels_error:
-            for _item_parcel_labels_error in self.parcel_labels_error:
-                if _item_parcel_labels_error:
-                    _items.append(_item_parcel_labels_error.to_dict())
-            _dict['ParcelLabelsError'] = _items
+        if self.prepare_labels_error:
+            for _item_prepare_labels_error in self.prepare_labels_error:
+                if _item_prepare_labels_error:
+                    _items.append(_item_prepare_labels_error.to_dict())
+            _dict['PrepareLabelsError'] = _items
         return _dict
 
     @classmethod
@@ -98,7 +98,7 @@ class PrepareLabelsResponse(BaseModel):
 
         _obj = cls.model_validate({
             "ParcelInfoList": [ParcelInfo.from_dict(_item) for _item in obj["ParcelInfoList"]] if obj.get("ParcelInfoList") is not None else None,
-            "ParcelLabelsError": [ErrorInfo.from_dict(_item) for _item in obj["ParcelLabelsError"]] if obj.get("ParcelLabelsError") is not None else None
+            "PrepareLabelsError": [ErrorInfo.from_dict(_item) for _item in obj["PrepareLabelsError"]] if obj.get("PrepareLabelsError") is not None else None
         })
         return _obj
 

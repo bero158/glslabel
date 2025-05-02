@@ -40,7 +40,7 @@ class TestPrintLabelsResponse(unittest.TestCase):
                     ],
                 print_labels_error_list = [
                     openapi_client.models.error_info.ErrorInfo(
-                        error_code = 56, 
+                        error_code = null, 
                         error_description = '', 
                         client_reference_list = [
                             ''

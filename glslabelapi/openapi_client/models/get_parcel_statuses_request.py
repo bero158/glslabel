@@ -17,23 +17,20 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from openapi_client.models.parcel import Parcel
 from typing import Optional, Set
 from typing_extensions import Self
 
-class PrintLabelsRequest(BaseModel):
+class GetParcelStatusesRequest(BaseModel):
     """
-    PrintLabelsRequest
+    GetParcelStatusesRequest
     """ # noqa: E501
-    username: Optional[StrictStr] = Field(default=None, alias="Username")
-    password: Optional[List[StrictInt]] = Field(default=None, alias="Password")
-    parcel_list: Optional[List[Parcel]] = Field(default=None, alias="ParcelList")
-    print_position: Optional[StrictInt] = Field(default=None, alias="PrintPosition")
-    show_print_dialog: Optional[StrictBool] = Field(default=None, alias="ShowPrintDialog")
-    type_of_printer: Optional[StrictStr] = Field(default=None, alias="TypeOfPrinter")
-    __properties: ClassVar[List[str]] = ["Username", "Password", "ParcelList", "PrintPosition", "ShowPrintDialog", "TypeOfPrinter"]
+    parcel_number: Optional[StrictStr] = Field(default=None, alias="ParcelNumber")
+    return_pod: Optional[StrictBool] = Field(default=None, alias="ReturnPOD")
+    language_iso_code: Optional[StrictStr] = Field(default=None, alias="LanguageIsoCode")
+    pickup_date_to: Optional[StrictStr] = Field(default=None, alias="PickupDateTo")
+    __properties: ClassVar[List[str]] = ["ParcelNumber", "ReturnPOD", "LanguageIsoCode", "PickupDateTo"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -53,7 +50,7 @@ class PrintLabelsRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of PrintLabelsRequest from a JSON string"""
+        """Create an instance of GetParcelStatusesRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -74,18 +71,11 @@ class PrintLabelsRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in parcel_list (list)
-        _items = []
-        if self.parcel_list:
-            for _item_parcel_list in self.parcel_list:
-                if _item_parcel_list:
-                    _items.append(_item_parcel_list.to_dict())
-            _dict['ParcelList'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of PrintLabelsRequest from a dict"""
+        """Create an instance of GetParcelStatusesRequest from a dict"""
         if obj is None:
             return None
 
@@ -93,12 +83,10 @@ class PrintLabelsRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "Username": obj.get("Username"),
-            "Password": obj.get("Password"),
-            "ParcelList": [Parcel.from_dict(_item) for _item in obj["ParcelList"]] if obj.get("ParcelList") is not None else None,
-            "PrintPosition": obj.get("PrintPosition"),
-            "ShowPrintDialog": obj.get("ShowPrintDialog"),
-            "TypeOfPrinter": obj.get("TypeOfPrinter")
+            "ParcelNumber": obj.get("ParcelNumber"),
+            "ReturnPOD": obj.get("ReturnPOD"),
+            "LanguageIsoCode": obj.get("LanguageIsoCode"),
+            "PickupDateTo": obj.get("PickupDateTo")
         })
         return _obj
 

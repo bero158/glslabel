@@ -70,6 +70,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetParcelListResponse'
+  /GetParcelStatuses:
+    post:
+      summary: Get parcel(s) information by parcel numbers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref:  '#/components/schemas/GetParcelStatusesRequest'
+      responses:
+        '200':
+          description: Parcel list retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetParcelStatusesResponse'
 components:
   schemas:
     PrepareLabelsRequest:
@@ -92,7 +108,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ParcelInfo'
-        ParcelLabelsError:
+        PrepareLabelsError:
           type: array
           items:
             $ref: '#/components/schemas/ErrorInfo'
@@ -190,7 +206,45 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PrintDataInfo'
-  
+    GetParcelStatusesRequest:
+      type: object
+      properties:
+        ParcelNumber:
+          type: string
+        ReturnPOD:
+          type: boolean
+        LanguageIsoCode:
+          type: string
+        PickupDateTo:
+          type: string
+    GetParcelStatusesResponse:
+      type: object
+      properties:
+        ClientReference:
+          type: string
+          nullable: true
+        DeliveryCountryCode:
+          type: string
+          nullable: true
+        DeliveryZipCode:
+          type: string
+          nullable: true
+        GetParcelStatusErrors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorInfo'
+        ParcelNumber:
+          type: integer
+        ParcelStatusList:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParcelStatus'   
+        POD:
+          type: array
+          items:
+            type: integer
+        Weight:
+          type: number
     Parcel:
       type: object
       properties:
@@ -352,3 +406,23 @@ components:
         Sort:
           type: string
           nullable: true
+    ParcelStatus:
+      type: object
+      properties:
+        DepotCity:
+          type: string
+          nullable: true
+        DepotNumber:
+          type: string
+          nullable: true
+        StatusCode:
+          type: string
+        StatusDate:
+          type: date-time
+        StatusDescription:
+          type: string
+          nullable: true
+        StatusInfo:
+          type: string
+          nullable: true
+       

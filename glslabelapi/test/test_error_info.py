@@ -35,7 +35,7 @@ class TestErrorInfo(unittest.TestCase):
         model = ErrorInfo()
         if include_optional:
             return ErrorInfo(
-                error_code = 56,
+                error_code = None,
                 error_description = '',
                 client_reference_list = [
                     ''

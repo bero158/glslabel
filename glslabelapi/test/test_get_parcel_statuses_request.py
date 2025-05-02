@@ -14,10 +14,10 @@
 
 import unittest
 
-from openapi_client.models.address import Address
+from openapi_client.models.get_parcel_statuses_request import GetParcelStatusesRequest
 
-class TestAddress(unittest.TestCase):
-    """Address unit test stubs"""
+class TestGetParcelStatusesRequest(unittest.TestCase):
+    """GetParcelStatusesRequest unit test stubs"""
 
     def setUp(self):
         pass
@@ -25,34 +25,28 @@ class TestAddress(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def make_instance(self, include_optional) -> Address:
-        """Test Address
+    def make_instance(self, include_optional) -> GetParcelStatusesRequest:
+        """Test GetParcelStatusesRequest
             include_optional is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
-        # uncomment below to create an instance of `Address`
+        # uncomment below to create an instance of `GetParcelStatusesRequest`
         """
-        model = Address()
+        model = GetParcelStatusesRequest()
         if include_optional:
-            return Address(
-                name = '',
-                street = '',
-                house_number = '',
-                house_number_info = '',
-                city = '',
-                zip_code = '',
-                country_iso_code = '',
-                contact_name = '',
-                contact_phone = '',
-                contact_email = ''
+            return GetParcelStatusesRequest(
+                parcel_number = '',
+                return_pod = True,
+                language_iso_code = '',
+                pickup_date_to = ''
             )
         else:
-            return Address(
+            return GetParcelStatusesRequest(
         )
         """
 
-    def testAddress(self):
-        """Test Address"""
+    def testGetParcelStatusesRequest(self):
+        """Test GetParcelStatusesRequest"""
         # inst_req_only = self.make_instance(include_optional=False)
         # inst_req_and_optional = self.make_instance(include_optional=True)
 

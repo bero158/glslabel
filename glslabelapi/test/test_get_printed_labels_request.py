@@ -35,9 +35,16 @@ class TestGetPrintedLabelsRequest(unittest.TestCase):
         model = GetPrintedLabelsRequest()
         if include_optional:
             return GetPrintedLabelsRequest(
-                label_ids = [
-                    ''
-                    ]
+                username = '',
+                password = [
+                    56
+                    ],
+                parcel_id_list = [
+                    56
+                    ],
+                print_position = 56,
+                show_print_dialog = True,
+                type_of_printer = ''
             )
         else:
             return GetPrintedLabelsRequest(

@@ -1,5 +1,5 @@
-#import glslabelapi.openapi_client as openapi_client
-import openapi_client as openapi_client
+import glslabel.glslabelapi.openapi_client as openapi_client
+#import openapi_client as openapi_client
 from dynaconf import Dynaconf
 import logging as LOGGER
 import os
@@ -75,7 +75,8 @@ class GLSApi:
             api_response : openapi_client.PrepareLabelsResponse = self.apiInstance.prepare_labels_post(prepareLabelsRequest)
             LOGGER.info("The response of DefaultApi->prepareLabelsRequest:")
             LOGGER.debug(api_response)
-            return api_response.parcel_info_list,api_response.parcel_labels_error
+            return api_response.parcel_info_list,api_response.prepare_labels_error
+            #return api_response.parcel_info_list,api_response.parcel_labels_error
         except openapi_client.ApiException as e:
             LOGGER.error("Exception when calling DefaultApi->prepareLabelsRequest: %s" % e)
 

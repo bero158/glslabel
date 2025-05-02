@@ -35,6 +35,10 @@ class TestGetParcelListRequest(unittest.TestCase):
         model = GetParcelListRequest()
         if include_optional:
             return GetParcelListRequest(
+                username = '',
+                password = [
+                    56
+                    ],
                 pickup_date_from = '',
                 pickup_date_to = '',
                 print_date_from = '',

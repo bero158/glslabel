@@ -36,7 +36,18 @@ class TestGetPrintedLabelsResponse(unittest.TestCase):
         if include_optional:
             return GetPrintedLabelsResponse(
                 labels = [
-                    ''
+                    56
+                    ],
+                get_printed_labels_error_list = [
+                    openapi_client.models.error_info.ErrorInfo(
+                        error_code = null, 
+                        error_description = '', 
+                        client_reference_list = [
+                            ''
+                            ], 
+                        parcel_id_list = [
+                            56
+                            ], )
                     ]
             )
         else:

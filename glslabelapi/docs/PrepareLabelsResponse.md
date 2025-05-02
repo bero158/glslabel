@@ -6,7 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **parcel_info_list** | [**List[ParcelInfo]**](ParcelInfo.md) |  | [optional] 
-**parcel_labels_error** | [**List[ErrorInfo]**](ErrorInfo.md) |  | [optional] 
+**prepare_labels_error** | [**List[ErrorInfo]**](ErrorInfo.md) |  | [optional] 
 
 ## Example
 

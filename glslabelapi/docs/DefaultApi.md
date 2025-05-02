@@ -5,6 +5,7 @@ All URIs are relative to *https://api.mygls.cz*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**get_parcel_list_post**](DefaultApi.md#get_parcel_list_post) | **POST** /GetParcelList | Get parcel(s) information by date ranges.
+[**get_parcel_statuses_post**](DefaultApi.md#get_parcel_statuses_post) | **POST** /GetParcelStatuses | Get parcel(s) information by parcel numbers
 [**get_printed_labels_post**](DefaultApi.md#get_printed_labels_post) | **POST** /GetPrintedLabels | Get printed labels
 [**prepare_labels_post**](DefaultApi.md#prepare_labels_post) | **POST** /PrepareLabels | Prepare labels for parcels
 [**print_labels_post**](DefaultApi.md#print_labels_post) | **POST** /PrintLabels | Calls both PrepareLabels and GetPrintedLabels in one step
@@ -59,6 +60,73 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**GetParcelListResponse**](GetParcelListResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Parcel list retrieved successfully |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_parcel_statuses_post**
+> GetParcelStatusesResponse get_parcel_statuses_post(get_parcel_statuses_request)
+
+Get parcel(s) information by parcel numbers
+
+### Example
+
+
+```python
+import openapi_client
+from openapi_client.models.get_parcel_statuses_request import GetParcelStatusesRequest
+from openapi_client.models.get_parcel_statuses_response import GetParcelStatusesResponse
+from openapi_client.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to https://api.mygls.cz
+# See configuration.py for a list of all supported configuration parameters.
+configuration = openapi_client.Configuration(
+    host = "https://api.mygls.cz"
+)
+
+
+# Enter a context with an instance of the API client
+with openapi_client.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = openapi_client.DefaultApi(api_client)
+    get_parcel_statuses_request = openapi_client.GetParcelStatusesRequest() # GetParcelStatusesRequest | 
+
+    try:
+        # Get parcel(s) information by parcel numbers
+        api_response = api_instance.get_parcel_statuses_post(get_parcel_statuses_request)
+        print("The response of DefaultApi->get_parcel_statuses_post:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling DefaultApi->get_parcel_statuses_post: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **get_parcel_statuses_request** | [**GetParcelStatusesRequest**](GetParcelStatusesRequest.md)|  | 
+
+### Return type
+
+[**GetParcelStatusesResponse**](GetParcelStatusesResponse.md)
 
 ### Authorization
 

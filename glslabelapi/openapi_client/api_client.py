@@ -404,12 +404,12 @@ class ApiClient:
                 data = json.loads(response_text)
             except ValueError:
                 data = response_text
-        elif re.match(r'^application/(json|[\w!#$&.+-^_]+\+json)\s*(;|$)', content_type, re.IGNORECASE):
+        elif content_type.startswith("application/json"):
             if response_text == "":
                 data = ""
             else:
                 data = json.loads(response_text)
-        elif re.match(r'^text\/[a-z.+-]+\s*(;|$)', content_type, re.IGNORECASE):
+        elif content_type.startswith("text/plain"):
             data = response_text
         else:
             raise ApiException(
@@ -535,10 +535,7 @@ class ApiClient:
 
         return "&".join(["=".join(map(str, item)) for item in new_params])
 
-    def files_parameters(
-        self,
-        files: Dict[str, Union[str, bytes, List[str], List[bytes], Tuple[str, bytes]]],
-    ):
+    def files_parameters(self, files: Dict[str, Union[str, bytes]]):
         """Builds form parameters.
 
         :param files: File parameters.
@@ -553,12 +550,6 @@ class ApiClient:
             elif isinstance(v, bytes):
                 filename = k
                 filedata = v
-            elif isinstance(v, tuple):
-                filename, filedata = v
-            elif isinstance(v, list):
-                for file_param in v:
-                    params.extend(self.files_parameters({k: file_param}))
-                continue
             else:
                 raise ValueError("Unsupported file value")
             mimetype = (
