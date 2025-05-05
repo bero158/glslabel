@@ -17,7 +17,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
@@ -26,11 +26,13 @@ class GetParcelStatusesRequest(BaseModel):
     """
     GetParcelStatusesRequest
     """ # noqa: E501
+    username: Optional[StrictStr] = Field(default=None, alias="Username")
+    password: Optional[List[StrictInt]] = Field(default=None, alias="Password")
     parcel_number: Optional[StrictStr] = Field(default=None, alias="ParcelNumber")
     return_pod: Optional[StrictBool] = Field(default=None, alias="ReturnPOD")
     language_iso_code: Optional[StrictStr] = Field(default=None, alias="LanguageIsoCode")
     pickup_date_to: Optional[StrictStr] = Field(default=None, alias="PickupDateTo")
-    __properties: ClassVar[List[str]] = ["ParcelNumber", "ReturnPOD", "LanguageIsoCode", "PickupDateTo"]
+    __properties: ClassVar[List[str]] = ["Username", "Password", "ParcelNumber", "ReturnPOD", "LanguageIsoCode", "PickupDateTo"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -83,6 +85,8 @@ class GetParcelStatusesRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "Username": obj.get("Username"),
+            "Password": obj.get("Password"),
             "ParcelNumber": obj.get("ParcelNumber"),
             "ReturnPOD": obj.get("ReturnPOD"),
             "LanguageIsoCode": obj.get("LanguageIsoCode"),

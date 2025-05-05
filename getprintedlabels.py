@@ -221,11 +221,11 @@ class GLSApi:
             Calls getParcelList() so use is limited to labels made less than 20 days ago.
         """
         printDataInfo = self.findParcelDataInfo(parcelNr=parcelNr, parcelId=parcelId)
-        return printDataInfo.parcel_id
+        return printDataInfo.parcel_id if printDataInfo else None
     
     def getParcel(self, parcelNr : int = None, parcelId : int = None) -> openapi_client.Parcel:
         printDataInfo = self.findParcelDataInfo(parcelNr=parcelNr, parcelId=parcelId)
-        return printDataInfo.parcel
+        return printDataInfo.parcel if printDataInfo else None
     
     def copyParcel(self, parcelIdList : list[int] = None) -> list[int]:
         """Copies parcel for printing because GLS doesn't support print a copy of the parcel which has been printed yet"""
@@ -278,7 +278,7 @@ def main():
     level='DEBUG' if args.verbose else settings.LOGLEVEL
     format="%(asctime)s %(levelname)s:%(name)s:%(message)s" if level == 'DEBUG' else "%(levelname)s - %(message)s"
     LOGGER.basicConfig(level='DEBUG' if args.verbose else settings.LOGLEVEL, format=format)
-    api = GLSApi(settings.USERNAME, settings.PASSWORD, host = settings.HOST)
+    api = GLSApi(settings.USERNAME, settings.PASSWORD, host = settings.HOST, webshopEngine=settings.WEBSHOP_ENGINE)
     labels = None
     parcelId = None
     if args.listprinters:

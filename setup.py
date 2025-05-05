@@ -30,6 +30,7 @@ REQUIRES = [
     "PyPDF2",
     # "glslabelapi",
     "win32printing"
+    
 ]
 
 setup(
@@ -47,5 +48,5 @@ setup(
     long_description="""\
     CLI and classes for MyGLS services
     """,  
-    package_data={"glslabelapi": ["py.typed"]},
+    package_data={"glslabelapi": ["py.typed"], "getprintedlabels": ["py.typed"]},
 )

@@ -30,8 +30,7 @@ class PrepareLabelsRequest(BaseModel):
     username: Optional[StrictStr] = Field(default=None, alias="Username")
     password: Optional[List[StrictInt]] = Field(default=None, alias="Password")
     parcel_list: Optional[List[Parcel]] = Field(default=None, alias="ParcelList")
-    webshop_engine: Optional[StrictStr] = Field(default=None, alias="WebshopEngine")
-    __properties: ClassVar[List[str]] = ["Username", "Password", "ParcelList", "WebshopEngine"]
+    __properties: ClassVar[List[str]] = ["Username", "Password", "ParcelList"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -93,8 +92,7 @@ class PrepareLabelsRequest(BaseModel):
         _obj = cls.model_validate({
             "Username": obj.get("Username"),
             "Password": obj.get("Password"),
-            "ParcelList": [Parcel.from_dict(_item) for _item in obj["ParcelList"]] if obj.get("ParcelList") is not None else None,
-            "WebshopEngine": obj.get("WebshopEngine")
+            "ParcelList": [Parcel.from_dict(_item) for _item in obj["ParcelList"]] if obj.get("ParcelList") is not None else None
         })
         return _obj
 

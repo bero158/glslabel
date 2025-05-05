@@ -209,6 +209,12 @@ components:
     GetParcelStatusesRequest:
       type: object
       properties:
+        Username:
+          type: string
+        Password:
+          type: array
+          items:
+            type: integer
         ParcelNumber:
           type: string
         ReturnPOD:
@@ -418,7 +424,7 @@ components:
         StatusCode:
           type: string
         StatusDate:
-          type: date-time
+          type: string
         StatusDescription:
           type: string
           nullable: true

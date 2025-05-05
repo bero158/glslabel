@@ -1,2 +1,3 @@
 LOGLEVEL = "INFO"
 HOST = "https://api.test.mygls.cz/ParcelService.svc/json"
+#HOST = "https://api.mygls.cz/ParcelService.svc/json/"

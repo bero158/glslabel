@@ -35,6 +35,10 @@ class TestGetParcelStatusesRequest(unittest.TestCase):
         model = GetParcelStatusesRequest()
         if include_optional:
             return GetParcelStatusesRequest(
+                username = '',
+                password = [
+                    56
+                    ],
                 parcel_number = '',
                 return_pod = True,
                 language_iso_code = '',

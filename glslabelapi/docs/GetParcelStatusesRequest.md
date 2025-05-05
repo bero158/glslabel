@@ -5,6 +5,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**username** | **str** |  | [optional] 
+**password** | **List[int]** |  | [optional] 
 **parcel_number** | **str** |  | [optional] 
 **return_pod** | **bool** |  | [optional] 
 **language_iso_code** | **str** |  | [optional] 

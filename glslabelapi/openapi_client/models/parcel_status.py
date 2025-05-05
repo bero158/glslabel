@@ -29,7 +29,7 @@ class ParcelStatus(BaseModel):
     depot_city: Optional[StrictStr] = Field(default=None, alias="DepotCity")
     depot_number: Optional[StrictStr] = Field(default=None, alias="DepotNumber")
     status_code: Optional[StrictStr] = Field(default=None, alias="StatusCode")
-    status_date: Optional[datetime] = Field(default=None, alias="StatusDate")
+    status_date: Optional[StrictStr] = Field(default=None, alias="StatusDate")
     status_description: Optional[StrictStr] = Field(default=None, alias="StatusDescription")
     status_info: Optional[StrictStr] = Field(default=None, alias="StatusInfo")
     __properties: ClassVar[List[str]] = ["DepotCity", "DepotNumber", "StatusCode", "StatusDate", "StatusDescription", "StatusInfo"]
@@ -73,9 +73,6 @@ class ParcelStatus(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of status_date
-        if self.status_date:
-            _dict['StatusDate'] = self.status_date.to_dict()
         # set to None if depot_city (nullable) is None
         # and model_fields_set contains the field
         if self.depot_city is None and "depot_city" in self.model_fields_set:
@@ -111,7 +108,7 @@ class ParcelStatus(BaseModel):
             "DepotCity": obj.get("DepotCity"),
             "DepotNumber": obj.get("DepotNumber"),
             "StatusCode": obj.get("StatusCode"),
-            "StatusDate": datetime.from_dict(obj["StatusDate"]) if obj.get("StatusDate") is not None else None,
+            "StatusDate": obj.get("StatusDate"),
             "StatusDescription": obj.get("StatusDescription"),
             "StatusInfo": obj.get("StatusInfo")
         })

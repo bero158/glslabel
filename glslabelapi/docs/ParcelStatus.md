@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **depot_city** | **str** |  | [optional] 
 **depot_number** | **str** |  | [optional] 
 **status_code** | **str** |  | [optional] 
-**status_date** | [**datetime**](DateTime.md) |  | [optional] 
+**status_date** | **str** |  | [optional] 
 **status_description** | **str** |  | [optional] 
 **status_info** | **str** |  | [optional] 
 

@@ -17,7 +17,7 @@ Features
 * Secrets are stored in .secrets.toml (you must create it)
 * In case the label exists and can't be printed (because of lack of this ability from GLS then a copy of the label is made and the copied label is stored and/or printed)
 * Added printing through GhostScript as an option in case Adobe Acrobat is not working
-
+* Added getstatus for getting package states
 Dependencies
 ------------
 

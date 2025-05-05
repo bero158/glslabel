@@ -91,8 +91,7 @@ class TestPrepareLabelsRequest(unittest.TestCase):
                             ], 
                         sender_identity_card_number = '', 
                         pickup_type = 56, )
-                    ],
-                webshop_engine = ''
+                    ]
             )
         else:
             return PrepareLabelsRequest(
