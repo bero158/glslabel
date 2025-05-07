@@ -5,6 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**code** | **str** |  | [optional] 
 **adr_parameter** | **str** |  | [optional] 
 **aos_parameter** | **str** |  | [optional] 
 **cs1_parameter** | **str** |  | [optional] 

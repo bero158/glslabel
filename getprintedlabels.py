@@ -204,10 +204,8 @@ class GLSApi:
             LOGGER.error("Exception when calling DefaultApi->get_printed_labels_post: %s" % e)
 
 
-    def findParcelDataInfo(self, parcelNr : int = None, parcelId : int = None, parcelList : list[openapi_client.Parcel] = None) -> openapi_client.PrintDataInfo:
+    def findParcelDataInfo(self, parcelNr : int = None, parcelId : int = None) -> openapi_client.PrintDataInfo:
         """Finds a parcel and rerurns Parcel"""
-        if not parcelList:
-            parcelList = self.getParcelList()
         printDataInfoList = self.getParcelList()
         try:
             printDataInfo = next(printDataInfo for printDataInfo in printDataInfoList if printDataInfo.parcel_number == parcelNr or printDataInfo.parcel_id == parcelId)

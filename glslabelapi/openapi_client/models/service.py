@@ -26,6 +26,7 @@ class Service(BaseModel):
     """
     Service
     """ # noqa: E501
+    code: Optional[StrictStr] = Field(default=None, alias="Code")
     adr_parameter: Optional[StrictStr] = Field(default=None, alias="ADRParameter")
     aos_parameter: Optional[StrictStr] = Field(default=None, alias="AOSParameter")
     cs1_parameter: Optional[StrictStr] = Field(default=None, alias="CS1Parameter")
@@ -41,7 +42,7 @@ class Service(BaseModel):
     sm2_parameter: Optional[StrictStr] = Field(default=None, alias="SM2Parameter")
     szl_parameter: Optional[StrictStr] = Field(default=None, alias="SZLParameter")
     value: Optional[StrictStr] = Field(default=None, alias="Value")
-    __properties: ClassVar[List[str]] = ["ADRParameter", "AOSParameter", "CS1Parameter", "DDSParameter", "DPVParameter", "FDSParameter", "FSSParameter", "INSParameter", "MMPParameter", "PSDParameter", "SDSParameter", "SM1Parameter", "SM2Parameter", "SZLParameter", "Value"]
+    __properties: ClassVar[List[str]] = ["Code", "ADRParameter", "AOSParameter", "CS1Parameter", "DDSParameter", "DPVParameter", "FDSParameter", "FSSParameter", "INSParameter", "MMPParameter", "PSDParameter", "SDSParameter", "SM1Parameter", "SM2Parameter", "SZLParameter", "Value"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -169,6 +170,7 @@ class Service(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "Code": obj.get("Code"),
             "ADRParameter": obj.get("ADRParameter"),
             "AOSParameter": obj.get("AOSParameter"),
             "CS1Parameter": obj.get("CS1Parameter"),
