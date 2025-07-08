@@ -80,7 +80,7 @@ class GLSApi:
         except openapi_client.ApiException as e:
             LOGGER.error("Exception when calling DefaultApi->prepareLabelsRequest: %s" % e)
 
-    def getPrintedLabels(self, parcelList : list[str], typeOfPrinter : str) -> list[int]:
+    def getPrintedLabels(self, parcelList : list[str]|map, typeOfPrinter : str) -> tuple[list[int]|None,list[openapi_client.ErrorInfo]|None]:
         """returns labels PDFs as array of integers"""
         # Enter a context with an instance of the API client
         getPrintedLabelsRequest = openapi_client.GetPrintedLabelsRequest(
@@ -97,6 +97,7 @@ class GLSApi:
             return api_response.labels,api_response.get_printed_labels_error_list
         except openapi_client.ApiException as e:
             LOGGER.error("Exception when calling DefaultApi->get_printed_labels_post: %s" % e)
+        return None, None
 
     @staticmethod
     def savePdf(fName : str, data : list[int]):
