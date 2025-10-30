@@ -101,6 +101,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Parcel'
+        WebshopEngine:
+          type: string
+          description: Webshop engine of the website REQUIRED
     PrepareLabelsResponse:
       type: object
       properties:
@@ -314,47 +317,118 @@ components:
         Code:
           type: string
         ADRParameter:
-          type: string
+          type: object
           nullable: true
+          properties:
+            AdrItemType:
+              type: integer
+              nullable: true
+            AmountUnit:
+              type: integer
+              nullable: true
+            InnerCount:
+              type: integer
+              nullable: true
+            PackSize:
+              type: integer
+              nullable: true
+            UnNumber:
+              type: integer
+              nullable: true
+
         AOSParameter:
-          type: string
+          type: object
           nullable: true
+          properties:
+            Value:
+              type: string
+              nullable: true
         CS1Parameter:
-          type: string
+          type: object
           nullable: true
+          properties:
+            Value:
+              type: string
+              nullable: true
         DDSParameter:
-          type: string
+          type: object
           nullable: true
+          properties:
+            Value:
+              type: string
+              nullable: true
         DPVParameter:
-          type: string
+          type: object
           nullable: true
+          properties:
+            StringValue:
+              type: string
+              nullable: true
+            DecimalValue:
+              type: number
+              nullable: true  
         FDSParameter:
-          type: string
+          type: object
           nullable: true
+          properties:
+            Value:
+              type: string
+              nullable: true
         FSSParameter:
-          type: string
+          type: object
           nullable: true
+          properties:
+            Value:
+              type: string
+              nullable: true
         INSParameter:
-          type: string
+          type: object
           nullable: true
+          properties:
+            Value:
+              type: string
+              nullable: true
         MMPParameter:
           type: string
           nullable: true
         PSDParameter:
-          type: string
+          type: object
           nullable: true
+          properties:
+            StringValue:
+              type: string
+              nullable: true
         SDSParameter:
-          type: string
+          type: object
           nullable: true
+          properties:
+            TimeFrom:
+              type: string
+              nullable: true
+            TimeTo:
+              type: string
+              nullable: true
         SM1Parameter:
-          type: string
+          type: object
           nullable: true
+          properties:
+            Value:
+              type: string
+              nullable: true
         SM2Parameter:
-          type: string
+          type: object
           nullable: true
+          properties:
+            Value:
+              type: string
+              nullable: true
         SZLParameter:
-          type: string
+          type: object
           nullable: true
+          properties:
+            Value:
+              type: string
+              nullable: true
         Value:
           type: string
           nullable: true

@@ -22,6 +22,11 @@ docs/PrintDataInfo.md
 docs/PrintLabelsRequest.md
 docs/PrintLabelsResponse.md
 docs/Service.md
+docs/ServiceADRParameter.md
+docs/ServiceAOSParameter.md
+docs/ServiceDPVParameter.md
+docs/ServicePSDParameter.md
+docs/ServiceSDSParameter.md
 git_push.sh
 openapi_client/__init__.py
 openapi_client/api/__init__.py
@@ -49,6 +54,11 @@ openapi_client/models/print_data_info.py
 openapi_client/models/print_labels_request.py
 openapi_client/models/print_labels_response.py
 openapi_client/models/service.py
+openapi_client/models/service_adr_parameter.py
+openapi_client/models/service_aos_parameter.py
+openapi_client/models/service_dpv_parameter.py
+openapi_client/models/service_psd_parameter.py
+openapi_client/models/service_sds_parameter.py
 openapi_client/py.typed
 openapi_client/rest.py
 pyproject.toml
@@ -57,4 +67,9 @@ setup.cfg
 setup.py
 test-requirements.txt
 test/__init__.py
+test/test_service_adr_parameter.py
+test/test_service_aos_parameter.py
+test/test_service_dpv_parameter.py
+test/test_service_psd_parameter.py
+test/test_service_sds_parameter.py
 tox.ini

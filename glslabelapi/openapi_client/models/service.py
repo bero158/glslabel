@@ -19,6 +19,11 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from openapi_client.models.service_adr_parameter import ServiceADRParameter
+from openapi_client.models.service_aos_parameter import ServiceAOSParameter
+from openapi_client.models.service_dpv_parameter import ServiceDPVParameter
+from openapi_client.models.service_psd_parameter import ServicePSDParameter
+from openapi_client.models.service_sds_parameter import ServiceSDSParameter
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -27,20 +32,20 @@ class Service(BaseModel):
     Service
     """ # noqa: E501
     code: Optional[StrictStr] = Field(default=None, alias="Code")
-    adr_parameter: Optional[StrictStr] = Field(default=None, alias="ADRParameter")
-    aos_parameter: Optional[StrictStr] = Field(default=None, alias="AOSParameter")
-    cs1_parameter: Optional[StrictStr] = Field(default=None, alias="CS1Parameter")
-    dds_parameter: Optional[StrictStr] = Field(default=None, alias="DDSParameter")
-    dpv_parameter: Optional[StrictStr] = Field(default=None, alias="DPVParameter")
-    fds_parameter: Optional[StrictStr] = Field(default=None, alias="FDSParameter")
-    fss_parameter: Optional[StrictStr] = Field(default=None, alias="FSSParameter")
-    ins_parameter: Optional[StrictStr] = Field(default=None, alias="INSParameter")
+    adr_parameter: Optional[ServiceADRParameter] = Field(default=None, alias="ADRParameter")
+    aos_parameter: Optional[ServiceAOSParameter] = Field(default=None, alias="AOSParameter")
+    cs1_parameter: Optional[ServiceAOSParameter] = Field(default=None, alias="CS1Parameter")
+    dds_parameter: Optional[ServiceAOSParameter] = Field(default=None, alias="DDSParameter")
+    dpv_parameter: Optional[ServiceDPVParameter] = Field(default=None, alias="DPVParameter")
+    fds_parameter: Optional[ServiceAOSParameter] = Field(default=None, alias="FDSParameter")
+    fss_parameter: Optional[ServiceAOSParameter] = Field(default=None, alias="FSSParameter")
+    ins_parameter: Optional[ServiceAOSParameter] = Field(default=None, alias="INSParameter")
     mmp_parameter: Optional[StrictStr] = Field(default=None, alias="MMPParameter")
-    psd_parameter: Optional[StrictStr] = Field(default=None, alias="PSDParameter")
-    sds_parameter: Optional[StrictStr] = Field(default=None, alias="SDSParameter")
-    sm1_parameter: Optional[StrictStr] = Field(default=None, alias="SM1Parameter")
-    sm2_parameter: Optional[StrictStr] = Field(default=None, alias="SM2Parameter")
-    szl_parameter: Optional[StrictStr] = Field(default=None, alias="SZLParameter")
+    psd_parameter: Optional[ServicePSDParameter] = Field(default=None, alias="PSDParameter")
+    sds_parameter: Optional[ServiceSDSParameter] = Field(default=None, alias="SDSParameter")
+    sm1_parameter: Optional[ServiceAOSParameter] = Field(default=None, alias="SM1Parameter")
+    sm2_parameter: Optional[ServiceAOSParameter] = Field(default=None, alias="SM2Parameter")
+    szl_parameter: Optional[ServiceAOSParameter] = Field(default=None, alias="SZLParameter")
     value: Optional[StrictStr] = Field(default=None, alias="Value")
     __properties: ClassVar[List[str]] = ["Code", "ADRParameter", "AOSParameter", "CS1Parameter", "DDSParameter", "DPVParameter", "FDSParameter", "FSSParameter", "INSParameter", "MMPParameter", "PSDParameter", "SDSParameter", "SM1Parameter", "SM2Parameter", "SZLParameter", "Value"]
 
@@ -83,6 +88,45 @@ class Service(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of adr_parameter
+        if self.adr_parameter:
+            _dict['ADRParameter'] = self.adr_parameter.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of aos_parameter
+        if self.aos_parameter:
+            _dict['AOSParameter'] = self.aos_parameter.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of cs1_parameter
+        if self.cs1_parameter:
+            _dict['CS1Parameter'] = self.cs1_parameter.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of dds_parameter
+        if self.dds_parameter:
+            _dict['DDSParameter'] = self.dds_parameter.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of dpv_parameter
+        if self.dpv_parameter:
+            _dict['DPVParameter'] = self.dpv_parameter.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of fds_parameter
+        if self.fds_parameter:
+            _dict['FDSParameter'] = self.fds_parameter.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of fss_parameter
+        if self.fss_parameter:
+            _dict['FSSParameter'] = self.fss_parameter.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of ins_parameter
+        if self.ins_parameter:
+            _dict['INSParameter'] = self.ins_parameter.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of psd_parameter
+        if self.psd_parameter:
+            _dict['PSDParameter'] = self.psd_parameter.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of sds_parameter
+        if self.sds_parameter:
+            _dict['SDSParameter'] = self.sds_parameter.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of sm1_parameter
+        if self.sm1_parameter:
+            _dict['SM1Parameter'] = self.sm1_parameter.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of sm2_parameter
+        if self.sm2_parameter:
+            _dict['SM2Parameter'] = self.sm2_parameter.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of szl_parameter
+        if self.szl_parameter:
+            _dict['SZLParameter'] = self.szl_parameter.to_dict()
         # set to None if adr_parameter (nullable) is None
         # and model_fields_set contains the field
         if self.adr_parameter is None and "adr_parameter" in self.model_fields_set:
@@ -171,20 +215,20 @@ class Service(BaseModel):
 
         _obj = cls.model_validate({
             "Code": obj.get("Code"),
-            "ADRParameter": obj.get("ADRParameter"),
-            "AOSParameter": obj.get("AOSParameter"),
-            "CS1Parameter": obj.get("CS1Parameter"),
-            "DDSParameter": obj.get("DDSParameter"),
-            "DPVParameter": obj.get("DPVParameter"),
-            "FDSParameter": obj.get("FDSParameter"),
-            "FSSParameter": obj.get("FSSParameter"),
-            "INSParameter": obj.get("INSParameter"),
+            "ADRParameter": ServiceADRParameter.from_dict(obj["ADRParameter"]) if obj.get("ADRParameter") is not None else None,
+            "AOSParameter": ServiceAOSParameter.from_dict(obj["AOSParameter"]) if obj.get("AOSParameter") is not None else None,
+            "CS1Parameter": ServiceAOSParameter.from_dict(obj["CS1Parameter"]) if obj.get("CS1Parameter") is not None else None,
+            "DDSParameter": ServiceAOSParameter.from_dict(obj["DDSParameter"]) if obj.get("DDSParameter") is not None else None,
+            "DPVParameter": ServiceDPVParameter.from_dict(obj["DPVParameter"]) if obj.get("DPVParameter") is not None else None,
+            "FDSParameter": ServiceAOSParameter.from_dict(obj["FDSParameter"]) if obj.get("FDSParameter") is not None else None,
+            "FSSParameter": ServiceAOSParameter.from_dict(obj["FSSParameter"]) if obj.get("FSSParameter") is not None else None,
+            "INSParameter": ServiceAOSParameter.from_dict(obj["INSParameter"]) if obj.get("INSParameter") is not None else None,
             "MMPParameter": obj.get("MMPParameter"),
-            "PSDParameter": obj.get("PSDParameter"),
-            "SDSParameter": obj.get("SDSParameter"),
-            "SM1Parameter": obj.get("SM1Parameter"),
-            "SM2Parameter": obj.get("SM2Parameter"),
-            "SZLParameter": obj.get("SZLParameter"),
+            "PSDParameter": ServicePSDParameter.from_dict(obj["PSDParameter"]) if obj.get("PSDParameter") is not None else None,
+            "SDSParameter": ServiceSDSParameter.from_dict(obj["SDSParameter"]) if obj.get("SDSParameter") is not None else None,
+            "SM1Parameter": ServiceAOSParameter.from_dict(obj["SM1Parameter"]) if obj.get("SM1Parameter") is not None else None,
+            "SM2Parameter": ServiceAOSParameter.from_dict(obj["SM2Parameter"]) if obj.get("SM2Parameter") is not None else None,
+            "SZLParameter": ServiceAOSParameter.from_dict(obj["SZLParameter"]) if obj.get("SZLParameter") is not None else None,
             "Value": obj.get("Value")
         })
         return _obj

@@ -32,3 +32,8 @@ from openapi_client.models.print_data_info import PrintDataInfo
 from openapi_client.models.print_labels_request import PrintLabelsRequest
 from openapi_client.models.print_labels_response import PrintLabelsResponse
 from openapi_client.models.service import Service
+from openapi_client.models.service_adr_parameter import ServiceADRParameter
+from openapi_client.models.service_aos_parameter import ServiceAOSParameter
+from openapi_client.models.service_dpv_parameter import ServiceDPVParameter
+from openapi_client.models.service_psd_parameter import ServicePSDParameter
+from openapi_client.models.service_sds_parameter import ServiceSDSParameter

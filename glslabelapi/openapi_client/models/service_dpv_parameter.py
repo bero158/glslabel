@@ -17,21 +17,18 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
-from openapi_client.models.parcel import Parcel
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
 
-class PrepareLabelsRequest(BaseModel):
+class ServiceDPVParameter(BaseModel):
     """
-    PrepareLabelsRequest
+    ServiceDPVParameter
     """ # noqa: E501
-    username: Optional[StrictStr] = Field(default=None, alias="Username")
-    password: Optional[List[StrictInt]] = Field(default=None, alias="Password")
-    parcel_list: Optional[List[Parcel]] = Field(default=None, alias="ParcelList")
-    webshop_engine: Optional[StrictStr] = Field(default=None, description="Webshop engine of the website REQUIRED", alias="WebshopEngine")
-    __properties: ClassVar[List[str]] = ["Username", "Password", "ParcelList", "WebshopEngine"]
+    string_value: Optional[StrictStr] = Field(default=None, alias="StringValue")
+    decimal_value: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, alias="DecimalValue")
+    __properties: ClassVar[List[str]] = ["StringValue", "DecimalValue"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -51,7 +48,7 @@ class PrepareLabelsRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of PrepareLabelsRequest from a JSON string"""
+        """Create an instance of ServiceDPVParameter from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,18 +69,21 @@ class PrepareLabelsRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in parcel_list (list)
-        _items = []
-        if self.parcel_list:
-            for _item_parcel_list in self.parcel_list:
-                if _item_parcel_list:
-                    _items.append(_item_parcel_list.to_dict())
-            _dict['ParcelList'] = _items
+        # set to None if string_value (nullable) is None
+        # and model_fields_set contains the field
+        if self.string_value is None and "string_value" in self.model_fields_set:
+            _dict['StringValue'] = None
+
+        # set to None if decimal_value (nullable) is None
+        # and model_fields_set contains the field
+        if self.decimal_value is None and "decimal_value" in self.model_fields_set:
+            _dict['DecimalValue'] = None
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of PrepareLabelsRequest from a dict"""
+        """Create an instance of ServiceDPVParameter from a dict"""
         if obj is None:
             return None
 
@@ -91,10 +91,8 @@ class PrepareLabelsRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "Username": obj.get("Username"),
-            "Password": obj.get("Password"),
-            "ParcelList": [Parcel.from_dict(_item) for _item in obj["ParcelList"]] if obj.get("ParcelList") is not None else None,
-            "WebshopEngine": obj.get("WebshopEngine")
+            "StringValue": obj.get("StringValue"),
+            "DecimalValue": obj.get("DecimalValue")
         })
         return _obj
 

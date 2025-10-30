@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **username** | **str** |  | [optional] 
 **password** | **List[int]** |  | [optional] 
 **parcel_list** | [**List[Parcel]**](Parcel.md) |  | [optional] 
+**webshop_engine** | **str** | Webshop engine of the website REQUIRED | [optional] 
 
 ## Example
 
